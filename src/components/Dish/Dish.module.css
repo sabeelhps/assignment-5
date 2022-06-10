@@ -1,0 +1,10 @@
+.dish{
+    border: 1px solid black;
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+.dish img{
+    width: 300px;
+    height: 200px;
+}
