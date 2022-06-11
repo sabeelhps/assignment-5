@@ -1,7 +1,7 @@
-import React,{useRef} from 'react';
+import React,{useEffect, useRef} from 'react';
 import styles from './Login.module.css';
 import users from '../data/users.json';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Navigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -9,6 +9,9 @@ const Login = () => {
     const usernameInputRef = useRef();
     const passwordInputRef = useRef();
     const navigate = useNavigate();
+
+    const currentUser = JSON.parse(window.localStorage.getItem('currentUser')) || null;
+
 
     const formSubmitHandler = (e) => {
         e.preventDefault();
@@ -24,33 +27,41 @@ const Login = () => {
         } else {
             alert('You Entered the wrong credentials!');
         }
-
     }
+
+    useEffect(() => {
+        if (currentUser) {
+            navigate('/dishes');
+        }
+    }, []);
+   
 
     return (
         <div>
             <div>
-                <form onSubmit={formSubmitHandler}>
-                    <div>
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            placeholder="username"
-                            id="username"
-                            ref={usernameInputRef}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="password">Username</label>
-                        <input
-                            type="password"
-                            placeholder="password"
-                            id="password"
-                            ref={passwordInputRef}
-                        />
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
+                { !currentUser &&  
+                    <form onSubmit={formSubmitHandler}>
+                        <div>
+                            <label htmlFor="username">Username</label>
+                            <input
+                                type="text"
+                                placeholder="username"
+                                id="username"
+                                ref={usernameInputRef}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password">Username</label>
+                            <input
+                                type="password"
+                                placeholder="password"
+                                id="password"
+                                ref={passwordInputRef}
+                            />
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                }
             </div>
       </div>
     )

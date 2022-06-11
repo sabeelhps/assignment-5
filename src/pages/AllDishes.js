@@ -1,29 +1,35 @@
-import React,{useEffect,useState} from 'react';
+import React,{useContext, useEffect,useState} from 'react';
 import DishList from '../components/DishList/DishList';
+import DishesContext from '../store/dish-store';
+import { useNavigate } from 'react-router-dom';
 
 
 const AllDishes = () => {
 
-    const [dishes, setDishes] = useState([]);
     const [rankedDishes, setRankedDishes] = useState({});
-    const [rankedDishList, setrankedDishList] = useState();
+    const [rankedDishList, setrankedDishList] = useState([]);
+    const navigate = useNavigate();
+    const currentUser = JSON.parse(window.localStorage.getItem('currentUser')) || null;
 
+    const { dishes } = useContext(DishesContext);
+    
     useEffect(() => {
-        async function getAllDishes() {
-            const res = await fetch('https://raw.githubusercontent.com/syook/react-dishpoll/main/db.json');
-            const data = await res.json();
-            setDishes(data);
+        if (!currentUser) {
+            navigate('/login');
         }
-        getAllDishes();
-    }, []);
+
+    });
 
     useEffect(() => {
         setrankedDishList(() => []);
         const temp = [];
-        for (const dish in rankedDishes) {
-            temp.push({ [dish]: rankedDishes[dish]});
-        }
+        if (rankedDishes['rank1'] && rankedDishes['rank2'] && rankedDishes['rank3']) {
+            temp.push(rankedDishes['rank1']);
+            temp.push(rankedDishes['rank2']);
+            temp.push(rankedDishes['rank3']);
+        } 
         setrankedDishList(() => temp);
+        
     }, [rankedDishes]);
 
     const setDishAsRank1 = (dishid) => {
@@ -57,24 +63,44 @@ const AllDishes = () => {
         setRankedDishes({ ...rankedDishes, rank3: dishid });
     }
 
-    console.log(rankedDishes);
+    const saveUserRankedDishListHandler = () => {
+        try {
+            const userDishRankedStore = JSON.parse(window.localStorage.getItem('UserDishRankedStore'));
+            console.log(userDishRankedStore);
+            const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
+            userDishRankedStore[currentUser.id]= rankedDishList;
+            localStorage.setItem('UserDishRankedStore', JSON.stringify(userDishRankedStore));
+        }
+        catch (e) {
+            console.log('Error in saving the users ranked dishes');
+        }
+    }
+
+    console.log(rankedDishList);
 
     return (
         <div>
             <h1>All Dishes</h1>
-            <DishList
+            {currentUser && <DishList
                 dishes={dishes}
                 setDishAsRank1={setDishAsRank1}
                 setDishAsRank2={setDishAsRank2}
                 setDishAsRank3={setDishAsRank3}
             />
+            }
+            <section>
             <ul>
                 {
-                    rankedDishList.map(() => {
-                        
+                    currentUser && rankedDishList.map((dishid,idx) => {
+                        const foundDish = dishes.find((d) => d.id === dishid);
+                        return <li key={idx}>
+                            Rank {idx+1} : {foundDish.dishName}, {foundDish.id}
+                        </li>
                     })
                 }
-            </ul>
+                </ul>
+                <button onClick={saveUserRankedDishListHandler}>Submit Poll</button>
+            </section>
             
       </div>
     )
