@@ -2,6 +2,7 @@ import React,{useContext, useEffect,useState} from 'react';
 import DishList from '../components/DishList/DishList';
 import DishesContext from '../store/dish-store';
 import { useNavigate } from 'react-router-dom';
+import styles from './AllDishes.module.css';
 
 
 const AllDishes = () => {
@@ -65,7 +66,7 @@ const AllDishes = () => {
 
     const saveUserRankedDishListHandler = () => {
         try {
-            const userDishRankedStore = JSON.parse(window.localStorage.getItem('UserDishRankedStore'));
+            const userDishRankedStore = JSON.parse(window.localStorage.getItem('UserDishRankedStore') || '{}');
             console.log(userDishRankedStore);
             const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
             userDishRankedStore[currentUser.id]= rankedDishList;
@@ -79,8 +80,8 @@ const AllDishes = () => {
     console.log(rankedDishList);
 
     return (
-        <div>
-            <h1>All Dishes</h1>
+        <div className={styles.alldishes}>
+          
             {currentUser && <DishList
                 dishes={dishes}
                 setDishAsRank1={setDishAsRank1}

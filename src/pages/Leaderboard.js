@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import DishesContext from '../store/dish-store';
+import styles from './Leaderboard.module.css';
 
 const Leaderboard = () => {
 
@@ -25,7 +26,7 @@ const Leaderboard = () => {
    
     return (
         <div>
-            <ul>
+            <ul className={styles.leaderboard}>
                 {
                     topRatedDish.length && topRatedDish.map((dish,idx) => {
                         const foundFood = dishes.find((food) => food.id === dish[0]);

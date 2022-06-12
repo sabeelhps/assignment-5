@@ -1,9 +1,10 @@
 import React from 'react'
 import Dish from '../Dish/Dish';
+import styles from './DishList.module.css';
 
 const DishList = (props) => {
   return (
-      <ul>
+      <ul className={styles.dishlist}>
           {
               props.dishes.map((dish) => {
                   return <Dish

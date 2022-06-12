@@ -1,7 +1,8 @@
 import React,{useEffect, useRef} from 'react';
 import styles from './Login.module.css';
 import users from '../data/users.json';
-import { useNavigate,Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Login = () => {
@@ -37,25 +38,23 @@ const Login = () => {
    
 
     return (
-        <div>
+        <div className={styles['login-form']}>
             <div>
                 { !currentUser &&  
                     <form onSubmit={formSubmitHandler}>
                         <div>
-                            <label htmlFor="username">Username</label>
                             <input
                                 type="text"
-                                placeholder="username"
-                                id="username"
+                                placeholder="Username"
                                 ref={usernameInputRef}
                             />
                         </div>
                         <div>
-                            <label htmlFor="password">Username</label>
+                           
                             <input
                                 type="password"
-                                placeholder="password"
-                                id="password"
+                                placeholder="Password"
+                              
                                 ref={passwordInputRef}
                             />
                         </div>
