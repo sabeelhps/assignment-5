@@ -17,3 +17,9 @@
 .leaderboard li span{
     font-weight: bold;
 }
+
+.selected-dish{
+    font-weight: bold;
+    font-style: italic;
+    text-transform: uppercase;
+}

@@ -5,6 +5,7 @@ import styles from './Leaderboard.module.css';
 const Leaderboard = () => {
 
     const UserDishRankedStore = JSON.parse(window.localStorage.getItem('UserDishRankedStore'));
+    const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
     const [topRatedDish, setTopRatedDish] = useState([]);
     const { dishes } = useContext(DishesContext);
 
@@ -26,16 +27,19 @@ const Leaderboard = () => {
    
     return (
         <div>
+            { topRatedDish.length ? 
             <ul className={styles.leaderboard}>
                 {
-                    topRatedDish.length && topRatedDish.map((dish,idx) => {
+                    topRatedDish.length && topRatedDish.map((dish, idx) => {
                         const foundFood = dishes.find((food) => food.id === dish[0]);
-                        return <li key={idx}>
-                            <span>{ idx+1 }</span> { foundFood && foundFood.dishName}
+                        return <li className={UserDishRankedStore[currentUser.id].includes(dish[0]) ? styles['selected-dish'] : ''} key={idx}>
+                            <span>{idx + 1}</span> {foundFood && foundFood.dishName}
+                            {UserDishRankedStore[currentUser.id].includes(dish[0]) ? <span style={{ fontWeight: 'normal' }}> - Your Selection</span> : ''}
                         </li>
                     })
                 }
             </ul>
+            : <p>No Dishes Selected Yet!!!</p>}
       </div>
     )
 }

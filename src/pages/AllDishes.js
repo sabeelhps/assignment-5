@@ -87,6 +87,7 @@ const AllDishes = () => {
                 setDishAsRank1={setDishAsRank1}
                 setDishAsRank2={setDishAsRank2}
                 setDishAsRank3={setDishAsRank3}
+                rankedDishes={rankedDishes}
             />
             }
             <section>

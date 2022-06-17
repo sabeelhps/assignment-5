@@ -16,6 +16,7 @@ const DishList = (props) => {
                       setDishAsRank1={props.setDishAsRank1}
                       setDishAsRank2={props.setDishAsRank2}
                       setDishAsRank3={props.setDishAsRank3}
+                      rankedDishes={props.rankedDishes}
                   />
               })
           }
